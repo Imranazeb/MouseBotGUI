@@ -1,10 +1,21 @@
 import PySimpleGUI as sg
+import time
+import random
+import pyautogui as pg
+import datetime as dt
+
 # sg.main_sdk_help()
 
+# DEFINE VARIABLES
+
 hours = [int(hour)+1 for hour in range(12)]
+init_time = 5
+init_state = False
 
 sg.set_options(font=('arial', 14, 'bold'))
+sg.theme('dark')
 
+# GET INPUT
 
 layout = [
     [sg.Text("Please enter start time: ", key='-DISPLAY-')],
@@ -33,29 +44,143 @@ while True:
 window['-DISPLAY-'].update("Please enter end time: ")
 window['-PM-'].update(value=True)
 
-print(f'shift starts at {shift_start}', 'AM' if is_start_day == True else 'PM')
-
 while True:
     event, values = window.read()
     if event == sg.WIN_CLOSED or event == 'Exit':
         exit()
     if event == 'OK':
-        shit_end = int(values['-TIME-'])
+        shift_end = int(values['-TIME-'])
         if values['-AM-'] == True:
             is_end_day = True
         else:
             is_end_day = False
+            shift_end += 12  # ADD 12 IF INPUT IS PM.
         break
 
 window.close()
 
-print(f'shift starts at {shift_start}', 'AM' if is_start_day == True else 'PM',
-      f'and ends at {shit_end}', 'AM' if is_end_day == True else 'PM'
-      )  # DEBUG
 
 if is_start_day == False and is_end_day == True:
     is_night_shift = True
+    shift_start -= 12
+    night_shift_start_day = (dt.datetime.now().day)
 else:
     is_night_shift = False
 
-print(f'night shift is {is_night_shift}')  # DEBUG
+print(
+    f'is_start_day {is_start_day} night_shift_start_day {night_shift_start_day}')
+
+# INITIALIZE
+
+layout = [
+    [sg.VPush()],
+    [sg.Text(f'txt',
+             justification='center',
+             font=("arial", 12, "bold"),
+             key='-text_init-')
+     ],
+    [sg.Text(f'',
+             justification='center',
+             font=("arial", 12, "bold"),
+             key='-text_countdown-')
+     ],
+    [sg.VPush()],
+]
+
+
+window = sg.Window(
+    'Mouse Click Emulator',
+    layout,
+    size=(480, 100),
+    element_justification='center',
+    keep_on_top=True
+)
+
+init_start_time = time.time()
+
+while not init_state:
+    event, values = window.read(timeout=10)
+    if event == (sg.WIN_CLOSED):
+        break
+
+    elasped_time = round(time.time()-init_start_time)
+    if elasped_time > init_time:
+        init_state = True
+        shift_is_on = True
+        break
+    else:
+        timer = (round(init_time-elasped_time))
+        window['-text_init-'].update(
+            f'Please place cursor at desired location within {timer} seconds')
+
+# GET MOUSE POSITION AFTER INIT:
+mouse_target_x = pg.position().x
+mouse_target_y = pg.position().y
+
+# MAIN PROGRAM
+
+while shift_is_on:
+    event, values = window.read(timeout=10)
+    if event == (sg.WIN_CLOSED):
+        break
+
+    current_time_hour = int(dt.datetime.now().hour)
+    current_time_min = int(dt.datetime.now().minute)
+    current_time_day = int(dt.datetime.now().day)
+    is_next_day = current_time_day > night_shift_start_day  # BOOLEAN
+
+    if is_night_shift == True and is_next_day == False:
+        current_time_hour = current_time_hour - 12
+        print("changed time")
+
+    print(f'is_night_shift {is_night_shift}  is_next_day {is_next_day}')
+    print(current_time_hour)
+
+    # print(f'current_time_hour: {current_time_hour}')
+    # print(f'shift_end :{shift_end}\n',
+    #       f'current_time_hour > shift_start: {current_time_hour > shift_start} \n and current_time_hour < shift_end: {current_time_hour < shift_end}')
+
+# FIGURE OUT NIGHT SHIFT PART ***********************************************************
+
+    if (current_time_hour > shift_start) and (current_time_hour < shift_end):
+        pg.click(mouse_target_x, mouse_target_y)
+        random_pause = random.randint(3*60, 5*60)
+        start_counter = time.time()
+        pause_completed = False
+        time_left_hr = shift_end - current_time_hour
+        time_left_min = 60 - current_time_min
+        window['-text_init-'].update(
+            f'{time_left_hr-1} hour(s) and {time_left_min} minutes to go!')
+
+        while not pause_completed:
+            event, values = window.read(timeout=10)
+            if event == (sg.WIN_CLOSED):
+                break
+
+            elasped_counter = round(time.time()-start_counter)
+            countdown = round(random_pause - elasped_counter)
+            if countdown > 0:
+                window['-text_countdown-'].update(
+                    f'Next mouse click in {countdown} seconds')
+            else:
+                pause_completed = True
+
+    else:
+        break
+
+while True:
+    window['-text_init-'].update(
+        f'Conratulations! End of shift')
+    window['-text_countdown-'].update(
+        f'')
+    event, values = window.read(timeout=10)
+
+    if event == (sg.WIN_CLOSED):
+        break
+    shift_is_on = False
+
+window.close()
+
+# print(f'shift starts at {shift_start}', 'AM' if is_start_day == True else 'PM',
+#       f'and ends at {shift_end}', 'AM' if is_end_day == True else 'PM'
+#       )  # DEBUG
