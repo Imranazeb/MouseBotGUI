@@ -62,13 +62,15 @@ window.close()
 
 if is_start_day == False and is_end_day == True:
     is_night_shift = True
-    shift_start -= 12
     night_shift_start_day = (dt.datetime.now().day)
+
 else:
     is_night_shift = False
+    night_shift_start_day = (dt.datetime.now().day)
 
-print(
-    f'is_start_day {is_start_day} night_shift_start_day {night_shift_start_day}')
+
+# print(
+#     f'is_start_day {is_start_day} night_shift_start_day {night_shift_start_day}')
 
 # INITIALIZE
 
@@ -129,12 +131,8 @@ while shift_is_on:
     current_time_day = int(dt.datetime.now().day)
     is_next_day = current_time_day > night_shift_start_day  # BOOLEAN
 
-    if is_night_shift == True and is_next_day == False:
-        current_time_hour = current_time_hour - 12
-        print("changed time")
-
-    print(f'is_night_shift {is_night_shift}  is_next_day {is_next_day}')
-    print(current_time_hour)
+    # print(f'is_night_shift {is_night_shift}  is_next_day {is_next_day}')
+    # print(current_time_hour)
 
     # print(f'current_time_hour: {current_time_hour}')
     # print(f'shift_end :{shift_end}\n',
@@ -142,15 +140,29 @@ while shift_is_on:
 
 # FIGURE OUT NIGHT SHIFT PART ***********************************************************
 
-    if (current_time_hour > shift_start) and (current_time_hour < shift_end):
+    if is_night_shift and not is_next_day:
+        night_adjuster = -24
+    else:
+        night_adjuster = 0
+
+    # print(f'adjuster = {night_adjuster}')
+    # print(
+    #     f'(current_time_hour > shift_start) {current_time_hour > shift_start} and (current_time_hour < shift_end - night_adjuster {current_time_hour < shift_end - night_adjuster})')
+
+    if (current_time_hour > shift_start) and (current_time_hour < shift_end - night_adjuster):
         pg.click(mouse_target_x, mouse_target_y)
         random_pause = random.randint(3*60, 5*60)
         start_counter = time.time()
         pause_completed = False
         time_left_hr = shift_end - current_time_hour
         time_left_min = 60 - current_time_min
-        window['-text_init-'].update(
-            f'{time_left_hr-1} hour(s) and {time_left_min} minutes to go!')
+        if not is_night_shift or is_next_day:
+            window['-text_init-'].update(
+                f'{time_left_hr-1} hour(s) and {time_left_min} minutes to go!')
+        else:
+            print("This is night shift", shift_start, shift_end)
+            window['-text_init-'].update(
+                f'{(12-shift_start) + shift_end} hour(s) and {time_left_min} minutes to go!')
 
         while not pause_completed:
             event, values = window.read(timeout=10)
