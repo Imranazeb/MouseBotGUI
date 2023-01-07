@@ -4,8 +4,6 @@ import random
 import pyautogui as pg
 import datetime as dt
 
-# sg.main_sdk_help()
-
 # DEFINE VARIABLES
 
 hours = [int(hour)+1 for hour in range(12)]
@@ -69,9 +67,6 @@ else:
     night_shift_start_day = (dt.datetime.now().day)
 
 
-# print(
-#     f'is_start_day {is_start_day} night_shift_start_day {night_shift_start_day}')
-
 # INITIALIZE
 
 layout = [
@@ -131,14 +126,8 @@ while shift_is_on:
     current_time_day = int(dt.datetime.now().day)
     is_next_day = current_time_day > night_shift_start_day  # BOOLEAN
 
-    # print(f'is_night_shift {is_night_shift}  is_next_day {is_next_day}')
-    # print(current_time_hour)
-
-    # print(f'current_time_hour: {current_time_hour}')
-    # print(f'shift_end :{shift_end}\n',
-    #       f'current_time_hour > shift_start: {current_time_hour > shift_start} \n and current_time_hour < shift_end: {current_time_hour < shift_end}')
-
-# FIGURE OUT NIGHT SHIFT PART ***********************************************************
+    
+    # FIGURE OUT NIGHT SHIFT PART 
 
     if is_night_shift and not is_next_day:
         night_adjuster = -24
@@ -192,7 +181,3 @@ while True:
     shift_is_on = False
 
 window.close()
-
-# print(f'shift starts at {shift_start}', 'AM' if is_start_day == True else 'PM',
-#       f'and ends at {shift_end}', 'AM' if is_end_day == True else 'PM'
-#       )  # DEBUG
