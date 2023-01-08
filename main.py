@@ -3,6 +3,7 @@ import time
 import random
 import pyautogui as pg
 import datetime as dt
+from sys import exit
 
 # DEFINE VARIABLES
 
