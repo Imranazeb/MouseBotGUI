@@ -146,7 +146,6 @@ while shift_is_on:
             window['-text_init-'].update(
                 f'{time_left_hr-1} hour(s) and {time_left_min} minutes to go!')
         else:
-            print("This is night shift", shift_start, shift_end)
             window['-text_init-'].update(
                 f'{(12-shift_start) + shift_end} hour(s) and {time_left_min} minutes to go!')
 
