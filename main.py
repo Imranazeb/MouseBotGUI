@@ -178,3 +178,4 @@ while True:
     shift_is_on = False
 
 window.close()
+exit()
