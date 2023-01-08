@@ -2,7 +2,7 @@
 
 This program will emulate at random time intervals mouse clicks on a specified location on the screen. 
 
-Download the main.zip (scroll to bottom) file to a folder. 
+Download the main.zip (scroll to bottom) file to a folder and extract main.exe. 
 
 **IMPORTANT:**  Because this is an executable, your anti-virus may categorize this program as a risk and/or it may quarantine it. ***It will need to be marked safe and added to antivirus exceptions, or it may need to be removed from quarantine. When run, windows may block it and you need to choose more options>run anyway.*** (This needs to be done only once. If you get stuck there are many Youtube videos on how to do all of this.) Rest assured this is not a virus and source code can be accessed [here](https://github.com/Imranazeb/MouseBotGUI/blob/master/main.py) 
 
