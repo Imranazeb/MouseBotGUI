@@ -12,4 +12,4 @@ Intended for PC only. For personal and educational purposes only. Please review 
 
 ## LINK TO ZIP FILE:
 
-I accept [https://github.com/Imranazeb/MouseBotGUI/blob/master/LICENSE.md) agreement by clicking [DOWNLOAD](https://github.com/Imranazeb/MouseBotGUI/releases/download/v1.00/main.exe)
+I accept [license](https://github.com/Imranazeb/MouseBotGUI/blob/master/LICENSE.md) agreement by clicking [DOWNLOAD](https://github.com/Imranazeb/MouseBotGUI/releases/download/v1.00/main.exe)
