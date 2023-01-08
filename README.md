@@ -1,4 +1,4 @@
-# __Mouse Click Bot__
+# __Mouse Click Bot (GUI version)__
 
 ### This program will emulate mouse clicks at random on a specified location on the screen. 
 ___
