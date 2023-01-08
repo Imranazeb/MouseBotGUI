@@ -142,6 +142,7 @@ while shift_is_on:
         pause_completed = False
         time_left_hr = shift_end - current_time_hour
         time_left_min = 60 - current_time_min
+        
         if not is_night_shift or is_next_day:
             window['-text_init-'].update(
                 f'{time_left_hr-1} hour(s) and {time_left_min} minutes to go!')
