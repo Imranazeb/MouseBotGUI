@@ -8,7 +8,7 @@ from sys import exit
 # DEFINE VARIABLES
 
 hours = [int(hour)+1 for hour in range(12)]
-init_time = 5
+init_time = 10
 init_state = False
 
 sg.set_options(font=('arial', 14, 'bold'))
