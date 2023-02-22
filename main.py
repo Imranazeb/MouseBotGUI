@@ -135,7 +135,7 @@ while shift_is_on:
     else:
         night_adjuster = 0
     
-    if (current_time_hour > shift_start) and (current_time_hour < shift_end - night_adjuster):
+    if (current_time_hour >= shift_start) and (current_time_hour < shift_end - night_adjuster):
         pg.click(mouse_target_x, mouse_target_y)
         random_pause = random.randint(3*60, 5*60)
         start_counter = time.time()
