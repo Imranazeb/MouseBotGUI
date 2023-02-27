@@ -4,12 +4,13 @@ import random
 import pyautogui as pg
 import datetime as dt
 from sys import exit
+img = "favicon.ico"
 
 # DEFINE VARIABLES
 
 hours = [int(hour)+1 for hour in range(12)]
-init_time = 10
-init_state = False
+startCountInit = 3
+initialized = False
 
 sg.set_options(font=('arial', 14, 'bold'))
 sg.theme('dark')
@@ -25,7 +26,7 @@ layout = [
      sg.Button('Exit')]
 ]
 
-window = sg.Window("Main window", layout)
+window = sg.Window("Main window", icon=img).Layout(layout)
 
 while True:
     event, values = window.read()
@@ -35,13 +36,14 @@ while True:
     if event == 'OK':
         shift_start = int(values['-TIME-'])
         if values['-AM-'] == True:
-            is_start_day = True
+            startsDay = True
         else:
-            is_start_day = False
+            startsDay = False
         break
 
 window['-DISPLAY-'].update("Please enter end time: ")
 window['-PM-'].update(value=True)
+
 
 while True:
     event, values = window.read()
@@ -50,21 +52,21 @@ while True:
     if event == 'OK':
         shift_end = int(values['-TIME-'])
         if values['-AM-'] == True:
-            is_end_day = True
+            endsDay = True
         else:
-            is_end_day = False
+            endsDay = False
             shift_end += 12  # ADD 12 IF INPUT IS PM.
         break
 
 window.close()
 
 
-if is_start_day == False and is_end_day == True:
-    is_night_shift = True
+if startsDay == False and endsDay == True:
+    isNightShift = True
     night_shift_start_day = (dt.datetime.now().day)
 
 else:
-    is_night_shift = False
+    isNightShift = False
     night_shift_start_day = (dt.datetime.now().day)
 
 
@@ -88,26 +90,26 @@ layout = [
 
 window = sg.Window(
     'Mouse Click Emulator',
-    layout,
+    icon=img,
     size=(480, 100),
     element_justification='center',
     keep_on_top=True
-)
+).Layout(layout)
 
 init_start_time = time.time()
 
-while not init_state:
+while not initialized:
     event, values = window.read(timeout=10)
     if event == (sg.WIN_CLOSED):
         break
 
     elasped_time = round(time.time()-init_start_time)
-    if elasped_time > init_time:
-        init_state = True
+    if elasped_time > startCountInit:
+        initialized = True
         shift_is_on = True
         break
     else:
-        timer = (round(init_time-elasped_time))
+        timer = (round(startCountInit-elasped_time))
         window['-text_init-'].update(
             f'Please place cursor at desired location within {timer} seconds')
 
@@ -117,36 +119,48 @@ mouse_target_y = pg.position().y
 
 # MAIN PROGRAM
 
+
+def determineParams():
+    current_time_hour = int(dt.datetime.now().hour)
+    current_time_min = int(dt.datetime.now().minute)
+    current_time_day = int(dt.datetime.now().day)
+    dayHaspassed = current_time_day > night_shift_start_day  # BOOLEAN
+    return current_time_hour, current_time_min, current_time_day, dayHaspassed
+
+
+def timeLeft(shift_end):
+    current_time_hour, current_time_min, current_time_day, dayHaspassed = determineParams()
+    time_left_hr = shift_end - current_time_hour
+    time_left_min = 60 - current_time_min
+    return time_left_hr, time_left_min
+
+
 while shift_is_on:
     event, values = window.read(timeout=10)
     if event == (sg.WIN_CLOSED):
         break
 
-    current_time_hour = int(dt.datetime.now().hour)
-    current_time_min = int(dt.datetime.now().minute)
-    current_time_day = int(dt.datetime.now().day)
-    is_next_day = current_time_day > night_shift_start_day  # BOOLEAN
+    current_time_hour, current_time_min, current_time_day, dayHaspassed = determineParams()
 
-    
-    # FIGURE OUT NIGHT SHIFT PART 
+    # FIGURE OUT NIGHT SHIFT PART
 
-    if is_night_shift and not is_next_day:
-        night_adjuster = -24
-    else:
-        night_adjuster = 0
-    
+    night_adjuster = -24 if isNightShift and not dayHaspassed else 0
+    onTheClock = (current_time_hour >= shift_start) and (
+        current_time_hour < shift_end - night_adjuster)
+
     if (current_time_hour >= shift_start) and (current_time_hour < shift_end - night_adjuster):
         pg.click(mouse_target_x, mouse_target_y)
         random_pause = random.randint(3*60, 5*60)
+
         start_counter = time.time()
         pause_completed = False
-        time_left_hr = shift_end - current_time_hour
-        time_left_min = 60 - current_time_min
-        
-        if not is_night_shift or is_next_day:
+
+        time_left_hr, time_left_min = timeLeft(shift_end)
+
+        if not isNightShift or dayHaspassed:  # dayshift
             window['-text_init-'].update(
                 f'{time_left_hr-1} hour(s) and {time_left_min} minutes to go!')
-        else:
+        else:  # nightshift
             window['-text_init-'].update(
                 f'{(12-shift_start) + shift_end} hour(s) and {time_left_min} minutes to go!')
 
@@ -157,6 +171,21 @@ while shift_is_on:
 
             elasped_counter = round(time.time()-start_counter)
             countdown = round(random_pause - elasped_counter)
+
+            time_left_hr, time_left_min = timeLeft(shift_end)
+
+            if not isNightShift or dayHaspassed:  # dayshift
+                window['-text_init-'].update(
+                    f'{time_left_hr-1} hour(s) and {time_left_min} minutes to go!')
+            else:  # nightshift
+                window['-text_init-'].update(
+                    f'{(12-shift_start) + shift_end} hour(s) and {time_left_min} minutes to go!')
+
+            if time_left_hr-1 <= 0 and time_left_min <= 0:
+                shift_is_on = False
+                pause_completed = True
+                break
+
             if countdown > 0:
                 window['-text_countdown-'].update(
                     f'Next mouse click in {countdown} seconds')
