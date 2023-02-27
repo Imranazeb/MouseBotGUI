@@ -106,7 +106,7 @@ while not initialized:
     elasped_time = round(time.time()-init_start_time)
     if elasped_time > startCountInit:
         initialized = True
-        shift_is_on = True
+        onTheClock = True
         break
     else:
         timer = (round(startCountInit-elasped_time))
@@ -135,7 +135,7 @@ def timeLeft(shift_end):
     return time_left_hr, time_left_min
 
 
-while shift_is_on:
+while onTheClock:
     event, values = window.read(timeout=10)
     if event == (sg.WIN_CLOSED):
         break
@@ -145,8 +145,9 @@ while shift_is_on:
     # FIGURE OUT NIGHT SHIFT PART
 
     night_adjuster = -24 if isNightShift and not dayHaspassed else 0
+
     onTheClock = (current_time_hour >= shift_start) and (
-        current_time_hour < shift_end - night_adjuster)
+        current_time_hour < shift_end - night_adjuster)  # bool
 
     if (current_time_hour >= shift_start) and (current_time_hour < shift_end - night_adjuster):
         pg.click(mouse_target_x, mouse_target_y)
@@ -181,8 +182,13 @@ while shift_is_on:
                 window['-text_init-'].update(
                     f'{(12-shift_start) + shift_end} hour(s) and {time_left_min} minutes to go!')
 
-            if time_left_hr-1 <= 0 and time_left_min <= 0:
-                shift_is_on = False
+            current_time_hour, current_time_min, current_time_day, dayHaspassed = determineParams()
+            night_adjuster = -24 if isNightShift and not dayHaspassed else 0
+
+            if (current_time_hour >= shift_start) and (current_time_hour < shift_end - night_adjuster):
+                pass
+            else:
+                onTheClock = False
                 pause_completed = True
                 break
 
@@ -204,7 +210,7 @@ while True:
 
     if event == (sg.WIN_CLOSED):
         break
-    shift_is_on = False
+    onTheClock = False
 
 window.close()
 exit()
