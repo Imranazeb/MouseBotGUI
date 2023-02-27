@@ -4,12 +4,18 @@ import random
 import pyautogui as pg
 import datetime as dt
 from sys import exit
-img = "favicon.ico"
+import base64
+
+from pic2str import img
+myImg = base64.b64decode(img)
+# image = tk.PhotoImage(data=bg)
+
+myImg = "favicon.ico"
 
 # DEFINE VARIABLES
 
 hours = [int(hour)+1 for hour in range(12)]
-startCountInit = 3
+startCountInit = 10
 initialized = False
 
 sg.set_options(font=('arial', 14, 'bold'))
@@ -26,7 +32,7 @@ layout = [
      sg.Button('Exit')]
 ]
 
-window = sg.Window("Main window", icon=img).Layout(layout)
+window = sg.Window("Main window", icon=myImg).Layout(layout)
 
 while True:
     event, values = window.read()
@@ -90,7 +96,7 @@ layout = [
 
 window = sg.Window(
     'Mouse Click Emulator',
-    icon=img,
+    icon=myImg,
     size=(480, 100),
     element_justification='center',
     keep_on_top=True
