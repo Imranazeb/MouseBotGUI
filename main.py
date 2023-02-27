@@ -8,7 +8,7 @@ import base64
 
 from pic2str import img
 myImg = base64.b64decode(img)
-# image = tk.PhotoImage(data=bg)
+
 
 myImg = "favicon.ico"
 
