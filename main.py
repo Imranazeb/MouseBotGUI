@@ -4,6 +4,10 @@ import random
 import pyautogui as pg
 import datetime as dt
 from sys import exit
+import os
+
+path = os.getcwd()
+myImg = os.path.join(path, "favicon.ico")
 
 
 myImg = "favicon.ico"
@@ -216,3 +220,4 @@ while True:
 
 window.close()
 exit()
+
