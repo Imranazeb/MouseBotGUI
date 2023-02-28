@@ -4,10 +4,6 @@ import random
 import pyautogui as pg
 import datetime as dt
 from sys import exit
-import base64
-
-from pic2str import img
-myImg = base64.b64decode(img)
 
 
 myImg = "favicon.ico"
