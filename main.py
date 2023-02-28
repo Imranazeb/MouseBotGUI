@@ -220,4 +220,3 @@ while True:
 
 window.close()
 exit()
-
