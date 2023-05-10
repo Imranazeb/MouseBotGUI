@@ -24,12 +24,12 @@ sg.theme('dark')
 # GET INPUT
 
 layout = [
-    [sg.Text("Please enter start time: ", key='-DISPLAY-')],
-    [sg.DD(hours, default_value='9', key='-TIME-')],
-    [sg.Radio('AM', 'time', default=True, key='-AM-'),
-     sg.Radio('PM', 'time', key='-PM-')],
-    [sg.Button('OK'),
-     sg.Button('Exit')]
+    [sg.Text("Please enter start time: ", key='-DISPLAY-', pad=(0, 20)),
+        sg.DD(hours, default_value='9', key='-TIME-'),
+        sg.Radio('AM', 'time', default=True, key='-AM-'),
+        sg.Radio('PM', 'time', key='-PM-')],
+    [sg.Push(), sg.Button('OK'),
+     sg.Button('Exit'), sg.Push()]
 ]
 
 window = sg.Window("Main window", icon=myImg).Layout(layout)
