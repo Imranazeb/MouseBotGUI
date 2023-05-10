@@ -19,7 +19,7 @@ startCountInit = 10
 initialized = False
 
 sg.set_options(font=('arial', 14, 'bold'))
-sg.theme('dark')
+sg.theme('SystemDefaultForReal')
 
 # GET INPUT
 
@@ -28,8 +28,8 @@ layout = [
         sg.DD(hours, default_value='9', key='-TIME-'),
         sg.Radio('AM', 'time', default=True, key='-AM-'),
         sg.Radio('PM', 'time', key='-PM-')],
-    [sg.Push(), sg.Button('OK'),
-     sg.Button('Exit'), sg.Push()]
+    [sg.Push(), sg.Button('OK', size=(6, 0), pad=((0, 10), (0, 30))),
+     sg.Button('Exit', size=(6, 0), pad=((10, 0), (0, 30))), sg.Push()]
 ]
 
 window = sg.Window("Main window", icon=myImg).Layout(layout)
