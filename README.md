@@ -16,7 +16,7 @@ ___
 ### PLATFORM AND PURPOSE:
 For PC and MAC. For personal and educational purposes only. Please review [license](https://github.com/Imranazeb/MouseBotGUI/blob/master/LICENSE.md). 
 ___
-## LINK TO ZIP FILE:
+## LINK TO FILES:
 Fow Windows, I accept [license](https://github.com/Imranazeb/MouseBotGUI/blob/master/LICENSE.md) agreement by clicking [DOWNLOAD](https://github.com/Imranazeb/MouseBotGUI/releases/download/v1.00/BOT_Win.exe).
 
 Fow MAC, I accept [license](https://github.com/Imranazeb/MouseBotGUI/blob/master/LICENSE.md) agreement by clicking [DOWNLOAD](https://github.com/Imranazeb/MouseBotGUI/releases/download/v1.00/BOT_MAC.app.zip).
