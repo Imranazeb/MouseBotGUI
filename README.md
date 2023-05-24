@@ -3,7 +3,7 @@
 ### This program will emulate mouse clicks at random on a specified location on the screen. 
 ___
 ### INSTALLATION:
-Download the relevant (scroll to bottom) to a folder and double click to run. **IMPORTANT:**  Because this is an executable, 
+Download the relevant file (scroll to bottom) to a folder and double click to run. **IMPORTANT:**  Because this is an executable, 
 
 - on windows: your anti-virus may categorize this program as a risk and/or it may quarantine it. ***It will need to be marked safe and added to antivirus exceptions, or it may need to be removed from quarantine. When run, windows may block it and you need to choose more options>run anyway.*** (This needs to be done only once. If you get stuck there are many Youtube videos on how to do all of this.) 
 - On MAC you will have to allow opening files form unknown developers. This can be done by going into ***system-perferences>security-and-privacy>general and choosing open anyway. When run, you will have to allow the program to take control of your computer in privacy settings. It might be best to then close the program and restart it***.
